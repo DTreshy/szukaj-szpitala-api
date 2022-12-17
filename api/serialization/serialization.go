@@ -19,18 +19,27 @@ func NewHospital(name, address, city, phone, email string) (*models.Hospital, er
 	}, nil
 }
 
-func NewPlace(address, city string) (*models.Place, error) {
+func NewPlace(address, city string) (models.Place, error) {
 	coords, err := geocoding.GetCoordinates(address, city, "poland")
 	if err != nil {
-		return nil, err
+		return models.Place{}, err
 	}
 
-	return &models.Place{
+	return models.Place{
 		Address: address,
 		City:    city,
-		Coordinates: &geocoding.Coordinates{
+		Coordinates: geocoding.Coordinates{
 			Latitude:  coords.Latitude,
 			Longitude: coords.Longitude,
 		},
 	}, nil
+}
+
+func NewPlaceFromCoords(Latitude, Longitude float64) *models.Place {
+	return &models.Place{
+		Coordinates: geocoding.Coordinates{
+			Latitude:  Latitude,
+			Longitude: Longitude,
+		},
+	}
 }

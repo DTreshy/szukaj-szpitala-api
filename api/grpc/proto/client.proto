@@ -41,8 +41,8 @@ message hospital {
 }
 
 message QueryNearestHospitalsRequest {
-  string city = 1;
-  string address = 2;
+	float Latitude = 1;
+	float Longitude = 2;
   int32 numberHospitals = 3;
 }
 

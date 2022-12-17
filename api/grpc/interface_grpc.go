@@ -64,18 +64,7 @@ func (s *server) InsertHospital(ctx context.Context, r *proto.InsertHospitalRequ
 }
 
 func (s *server) QueryNearestHospitals(ctx context.Context, r *proto.QueryNearestHospitalsRequest) (*proto.QueryNearestHospitalsReply, error) {
-	if r.Address == "" {
-		return &proto.QueryNearestHospitalsReply{Message: "address cannot be blank"}, nil
-	}
-
-	if r.City == "" {
-		return &proto.QueryNearestHospitalsReply{Message: "city cannot be blank"}, nil
-	}
-
-	place, err := serialization.NewPlace(r.Address, r.City)
-	if err != nil {
-		return &proto.QueryNearestHospitalsReply{Message: fmt.Sprintf("cannot serialize place: %s", err.Error())}, nil
-	}
+	place := serialization.NewPlaceFromCoords(float64(r.Latitude), float64(r.Longitude))
 
 	hospitals, err := s.db.QueryNearestHospitals(ctx, place, int(r.NumberHospitals))
 	if err != nil {

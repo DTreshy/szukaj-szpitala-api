@@ -8,13 +8,11 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/golang/geo/s1"
 )
 
 type Coordinates struct {
-	Latitude  float64
-	Longitude float64
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
 }
 
 type Resp struct {
@@ -34,9 +32,6 @@ type Geometry struct {
 	Tp          string    `json:"type"`
 	Coordinates []float64 `json:"coordinates"`
 }
-
-// Radius of earth in kilometers. Use 3956 for miles
-var r int = 6371
 
 func GetCoordinates(street, city, country string) (*Coordinates, error) {
 	method := "GET"
@@ -83,15 +78,26 @@ func GetCoordinates(street, city, country string) (*Coordinates, error) {
 }
 
 // Returns distance beetween 2 coordinates in km
-func CalculateDistance(coords1, coords2 *Coordinates) float64 {
-	lon1 := s1.Angle(coords1.Longitude).Radians()
-	lon2 := s1.Angle(coords2.Longitude).Radians()
-	lat1 := s1.Angle(coords1.Latitude).Radians()
-	lat2 := s1.Angle(coords2.Latitude).Radians()
-	dlon := lon2 - lon1
-	dlat := lat2 - lat1
-	a := math.Pow(math.Sin(dlat/2), 2) + math.Pow(math.Cos(lat1)*math.Cos(lat2)*math.Sin(dlon/2), 2)
-	c := 2 * math.Asin(math.Sqrt(a))
+func CalculateDistance(coords1, coords2 Coordinates) float64 {
+	radlat1 := float64(math.Pi * coords1.Latitude / 180)
+	radlat2 := float64(math.Pi * coords2.Latitude / 180)
 
-	return c * float64(r)
+	theta := float64(coords1.Longitude - coords2.Longitude)
+	radtheta := float64(math.Pi * theta / 180)
+
+	dist := math.Sin(radlat1)*math.Sin(radlat2) + math.Cos(radlat1)*math.Cos(radlat2)*math.Cos(radtheta)
+	if dist > 1 {
+		dist = 1
+	}
+
+	dist = math.Acos(dist)
+	dist = dist * 180 / math.Pi
+	dist = dist * 60 * 1.853159616
+
+	return roundFloat(dist, 3)
+}
+
+func roundFloat(val float64, precision uint) float64 {
+	ratio := math.Pow(10, float64(precision))
+	return math.Round(val*ratio) / ratio
 }

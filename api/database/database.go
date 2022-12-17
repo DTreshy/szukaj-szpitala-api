@@ -74,7 +74,7 @@ func (db *Db) QueryNearestHospitals(ctx context.Context, place *models.Place, nu
 		return nil, err
 	}
 
-	var curr *models.Hospital
+	curr := models.Hospital{}
 	var largestDistanceMatching float64 = 0
 
 	for {
@@ -82,7 +82,7 @@ func (db *Db) QueryNearestHospitals(ctx context.Context, place *models.Place, nu
 			break
 		}
 
-		if err := bson.Unmarshal(cur.Current, curr); err != nil {
+		if err := bson.Unmarshal(cur.Current, &curr); err != nil {
 			return nil, fmt.Errorf("failed to unmarshall hospital: %w", err)
 		}
 
@@ -90,7 +90,7 @@ func (db *Db) QueryNearestHospitals(ctx context.Context, place *models.Place, nu
 
 		if len(matchingHospitals) < number {
 			matchingHospitals = append(matchingHospitals, models.HospitalInfo{
-				Hospital: curr,
+				Hospital: &curr,
 				Distance: dist,
 			})
 
@@ -105,7 +105,28 @@ func (db *Db) QueryNearestHospitals(ctx context.Context, place *models.Place, nu
 			continue
 		}
 
+		matchingHospitals = removeLargestDistanceFromSlice(matchingHospitals, largestDistanceMatching)
+		matchingHospitals = append(matchingHospitals, models.HospitalInfo{
+			Hospital: &curr,
+			Distance: dist,
+		})
 	}
 
 	return matchingHospitals, nil
+}
+
+func removeLargestDistanceFromSlice(hi []models.HospitalInfo, dist float64) []models.HospitalInfo {
+	idx := 0
+
+	for i, val := range hi {
+		if val.Distance == dist {
+			idx = i
+
+			break
+		}
+	}
+
+	hi[idx] = hi[len(hi)-1]
+
+	return hi[:len(hi)-1]
 }
