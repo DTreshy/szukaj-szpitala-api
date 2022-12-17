@@ -16,7 +16,15 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/cmd/",
+            "program": "${workspaceFolder}/cmd/szukaj-szpitala-api/",
+        },
+        {
+            "name": "csvimporter",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/csvimporter/",
+            "console": "integratedTerminal"
         },
     ]
 }

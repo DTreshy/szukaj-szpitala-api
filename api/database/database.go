@@ -74,10 +74,11 @@ func (db *Db) QueryNearestHospitals(ctx context.Context, place *models.Place, nu
 		return nil, err
 	}
 
-	curr := models.Hospital{}
 	var largestDistanceMatching float64 = 0
 
 	for {
+		curr := models.Hospital{}
+
 		if ok := cur.Next(ctx); !ok {
 			break
 		}
@@ -110,6 +111,7 @@ func (db *Db) QueryNearestHospitals(ctx context.Context, place *models.Place, nu
 			Hospital: &curr,
 			Distance: dist,
 		})
+		largestDistanceMatching = findNewLargestDistance(matchingHospitals)
 	}
 
 	return matchingHospitals, nil
@@ -129,4 +131,14 @@ func removeLargestDistanceFromSlice(hi []models.HospitalInfo, dist float64) []mo
 	hi[idx] = hi[len(hi)-1]
 
 	return hi[:len(hi)-1]
+}
+
+func findNewLargestDistance(hi []models.HospitalInfo) (dist float64) {
+	for _, val := range hi {
+		if val.Distance > dist {
+			dist = val.Distance
+		}
+	}
+
+	return dist
 }

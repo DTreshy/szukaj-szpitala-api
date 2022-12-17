@@ -47,10 +47,6 @@ func (s *server) InsertHospital(ctx context.Context, r *proto.InsertHospitalRequ
 		return &proto.InsertHospitalReply{Message: "name cannot be blank"}, nil
 	}
 
-	if r.Phone == "" {
-		return &proto.InsertHospitalReply{Message: "phone cannot be blank"}, nil
-	}
-
 	hospital, err := serialization.NewHospital(r.Name, r.Address, r.City, r.Phone, r.Email)
 	if err != nil {
 		return &proto.InsertHospitalReply{Message: fmt.Sprintf("cannot serialize hospital: %s", err.Error())}, nil
