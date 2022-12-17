@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/DTreshy/szukaj-szpitala-api/api/grpc/proto"
+	"github.com/DTreshy/szukaj-szpitala-api/api/intGrpc/proto"
 	googleRPC "google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

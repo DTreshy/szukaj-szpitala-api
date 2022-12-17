@@ -1,14 +1,14 @@
-package grpc
+package intGrpc
 
 import (
 	"context"
 	"fmt"
 
 	"github.com/DTreshy/szukaj-szpitala-api/api/database"
-	"github.com/DTreshy/szukaj-szpitala-api/api/grpc/proto"
+	"github.com/DTreshy/szukaj-szpitala-api/api/intGrpc/proto"
 	"github.com/DTreshy/szukaj-szpitala-api/api/serialization"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
-	googleRPC "google.golang.org/grpc"
+	"google.golang.org/grpc"
 )
 
 type server struct {
@@ -16,10 +16,10 @@ type server struct {
 	db *database.Db
 }
 
-func NewGrpcServer(db *database.Db) *googleRPC.Server {
-	s := googleRPC.NewServer(
-		googleRPC.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
-		googleRPC.ChainUnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+func NewGrpcServer(db *database.Db) *grpc.Server {
+	s := grpc.NewServer(
+		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
+		grpc.ChainUnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
 	)
 
 	proto.RegisterClientServer(s, &server{
