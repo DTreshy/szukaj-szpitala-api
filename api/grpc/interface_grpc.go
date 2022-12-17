@@ -84,14 +84,14 @@ func (s *server) QueryNearestHospitals(ctx context.Context, r *proto.QueryNeares
 
 	protoHospitals := []*proto.Hospital{}
 
-	for dist, hospital := range hospitals {
+	for _, hospital := range hospitals {
 		protoHospitals = append(protoHospitals, &proto.Hospital{
-			Name:     hospital.Name,
-			Email:    hospital.Email,
-			Phone:    hospital.Phone,
-			City:     hospital.Place.City,
-			Address:  hospital.Place.Address,
-			Distance: float32(dist),
+			Name:     hospital.Hospital.Name,
+			Email:    hospital.Hospital.Email,
+			Phone:    hospital.Hospital.Phone,
+			City:     hospital.Hospital.Place.City,
+			Address:  hospital.Hospital.Place.Address,
+			Distance: float32(hospital.Distance),
 		})
 	}
 
