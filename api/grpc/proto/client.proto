@@ -2,6 +2,51 @@ syntax = "proto3";
 
 option go_package = "github.com/DTreshy/szukaj-szpital-api/api/proto";
 
+import "google/api/annotations.proto";
+
 service Client {
-    
+  rpc InsertHospital(InsertHospitalRequest) returns (InsertHospitalReply) {
+    option (google.api.http) = {
+      post: "/rpc/InsertData"
+      body: "*"
+    };
+  }
+  rpc QueryNearestHospitals(QueryNearestHospitalsRequest) returns (QueryNearestHospitalsReply) {
+    option (google.api.http) = {
+      post: "/rpc/QueryNearestHospitals"
+      body: "*"
+    };
+  }
+}
+
+message InsertHospitalRequest {
+    string name = 1;
+    string city = 2;
+    string address = 3;
+    string phone = 4;
+    string email = 5;
+}
+
+message InsertHospitalReply {
+    string message = 1;
+}
+
+message hospital {
+  string name = 1;
+  string city = 2;
+  string address = 3;
+  string phone = 4;
+  string email = 5;
+  float distance = 6;
+}
+
+message QueryNearestHospitalsRequest {
+  string city = 1;
+  string address = 2;
+  int32 numberHospitals = 3;
+}
+
+message QueryNearestHospitalsReply {
+  repeated hospital nearestHospitals = 1;
+  string message = 2;
 }
