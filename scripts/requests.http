@@ -3,7 +3,7 @@ POST http://localhost:22341/rpc/QueryNearestHospitals
 Content-Type: application/json
 
 {
-  "Latitude": 54.498075,
-  "Longitude": 18.513167,
+  "latitude": 54.498075,
+  "longitude": 18.513167,
   "numberHospitals": 5
 }

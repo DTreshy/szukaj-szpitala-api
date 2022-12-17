@@ -38,11 +38,13 @@ message hospital {
   string phone = 4;
   string email = 5;
   float distance = 6;
+  float latitude = 7;
+  float longitude = 8;
 }
 
 message QueryNearestHospitalsRequest {
-	float Latitude = 1;
-	float Longitude = 2;
+	float latitude = 1;
+	float longitude = 2;
   int32 numberHospitals = 3;
 }
 
