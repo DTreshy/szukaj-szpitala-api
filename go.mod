@@ -5,6 +5,7 @@ go 1.19
 require google.golang.org/grpc v1.50.1
 
 require (
+	github.com/DTreshy/go-validate v0.0.0-20230105192121-f2298e7e9b73 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551 // indirect

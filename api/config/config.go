@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/DTreshy/szukaj-szpitala-api/pkg/endpoint"
+	"github.com/DTreshy/go-validate/endpoint"
 )
 
 type Config struct {
@@ -72,7 +72,7 @@ func getEndpointFromConfig(m map[string]any, name string) (string, error) {
 		return "", fmt.Errorf("%s is not a string", name)
 	}
 
-	if err := endpoint.ValidateEndpoint(stringval); err != nil {
+	if err := endpoint.Validate(stringval); err != nil {
 		return "", err
 	}
 
