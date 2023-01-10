@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/DTreshy/go-validate/endpoint"
+	"github.com/DTreshy/go-validate/validate"
 )
 
 type Config struct {
@@ -72,7 +72,7 @@ func getEndpointFromConfig(m map[string]any, name string) (string, error) {
 		return "", fmt.Errorf("%s is not a string", name)
 	}
 
-	if err := endpoint.Validate(stringval); err != nil {
+	if err := validate.Endpoint(stringval); err != nil {
 		return "", err
 	}
 

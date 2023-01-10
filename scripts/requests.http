@@ -7,3 +7,15 @@ Content-Type: application/json
   "longitude": 18.513167,
   "numberHospitals": 5
 }
+
+### Insert new hospital
+POST http://localhost:22341/rpc/InsertData
+Content-Type: application/json
+
+{
+  "name": "<hospital-name>",
+  "city": "<city>>",
+  "address": "<address>",
+  "phone": "<phone>",
+  "email": "<email>"
+}
